@@ -1,0 +1,257 @@
+import { School, ClassLevel, Section, Bundle, Product, AcademicYear } from '@/types';
+
+export const mockAcademicYear: AcademicYear = {
+  id: '1',
+  year: '2024-25',
+  startDate: new Date('2024-04-01'),
+  endDate: new Date('2025-03-31'),
+  isCurrent: true,
+};
+
+export const mockSchools: School[] = [
+  {
+    id: '1',
+    name: 'Delhi Public School',
+    code: 'DPS-DEL',
+    address: 'Mathura Road, New Delhi',
+    city: 'New Delhi',
+    state: 'Delhi',
+    pincode: '110003',
+    isActive: true,
+  },
+  {
+    id: '2',
+    name: 'St. Mary\'s Convent School',
+    code: 'STMARY-MUM',
+    address: 'Bandra West, Mumbai',
+    city: 'Mumbai',
+    state: 'Maharashtra',
+    pincode: '400050',
+    isActive: true,
+  },
+  {
+    id: '3',
+    name: 'The Heritage School',
+    code: 'HERITAGE-BLR',
+    address: 'Whitefield, Bangalore',
+    city: 'Bangalore',
+    state: 'Karnataka',
+    pincode: '560066',
+    isActive: true,
+  },
+  {
+    id: '4',
+    name: 'Ryan International School',
+    code: 'RYAN-GGN',
+    address: 'Sector 40, Gurugram',
+    city: 'Gurugram',
+    state: 'Haryana',
+    pincode: '122001',
+    isActive: true,
+  },
+  {
+    id: '5',
+    name: 'Kendriya Vidyalaya',
+    code: 'KV-CHN',
+    address: 'Adyar, Chennai',
+    city: 'Chennai',
+    state: 'Tamil Nadu',
+    pincode: '600020',
+    isActive: true,
+  },
+];
+
+export const mockClasses: ClassLevel[] = [
+  { id: '1', name: 'Nursery', grade: 0, schoolId: '1' },
+  { id: '2', name: 'LKG', grade: 1, schoolId: '1' },
+  { id: '3', name: 'UKG', grade: 2, schoolId: '1' },
+  { id: '4', name: 'Class 1', grade: 3, schoolId: '1' },
+  { id: '5', name: 'Class 2', grade: 4, schoolId: '1' },
+  { id: '6', name: 'Class 3', grade: 5, schoolId: '1' },
+  { id: '7', name: 'Class 4', grade: 6, schoolId: '1' },
+  { id: '8', name: 'Class 5', grade: 7, schoolId: '1' },
+  { id: '9', name: 'Class 6', grade: 8, schoolId: '1' },
+  { id: '10', name: 'Class 7', grade: 9, schoolId: '1' },
+  { id: '11', name: 'Class 8', grade: 10, schoolId: '1' },
+  { id: '12', name: 'Class 9', grade: 11, schoolId: '1' },
+  { id: '13', name: 'Class 10', grade: 12, schoolId: '1' },
+];
+
+export const mockSections: Section[] = [
+  { id: '1', name: 'A', classId: '4' },
+  { id: '2', name: 'B', classId: '4' },
+  { id: '3', name: 'C', classId: '4' },
+  { id: '4', name: 'D', classId: '4' },
+  { id: '5', name: 'A', classId: '5' },
+  { id: '6', name: 'B', classId: '5' },
+];
+
+const mockProducts: Product[] = [
+  {
+    id: '1',
+    name: 'NCERT Mathematics Class 1',
+    sku: 'NCERT-MATH-1',
+    type: 'book',
+    description: 'NCERT Mathematics textbook for Class 1',
+    publisher: 'NCERT',
+    isbn: '978-81-7450-XXX-X',
+    mrp: 65,
+    hsnCode: '4901',
+    gstRate: 0,
+  },
+  {
+    id: '2',
+    name: 'NCERT English Class 1',
+    sku: 'NCERT-ENG-1',
+    type: 'book',
+    description: 'NCERT English textbook for Class 1 - Marigold',
+    publisher: 'NCERT',
+    isbn: '978-81-7450-XXX-Y',
+    mrp: 55,
+    hsnCode: '4901',
+    gstRate: 0,
+  },
+  {
+    id: '3',
+    name: 'NCERT Hindi Class 1',
+    sku: 'NCERT-HIN-1',
+    type: 'book',
+    description: 'NCERT Hindi textbook for Class 1 - Rimjhim',
+    publisher: 'NCERT',
+    isbn: '978-81-7450-XXX-Z',
+    mrp: 50,
+    hsnCode: '4901',
+    gstRate: 0,
+  },
+  {
+    id: '4',
+    name: 'NCERT EVS Class 1',
+    sku: 'NCERT-EVS-1',
+    type: 'book',
+    description: 'NCERT Environmental Studies for Class 1',
+    publisher: 'NCERT',
+    isbn: '978-81-7450-XXX-A',
+    mrp: 60,
+    hsnCode: '4901',
+    gstRate: 0,
+  },
+  {
+    id: '5',
+    name: 'Classmate Notebook (172 Pages)',
+    sku: 'CM-NB-172',
+    type: 'stationery',
+    description: 'Single line ruled notebook - 172 pages',
+    mrp: 45,
+    hsnCode: '4820',
+    gstRate: 12,
+  },
+  {
+    id: '6',
+    name: 'Apsara Pencils (Pack of 10)',
+    sku: 'APS-PEN-10',
+    type: 'stationery',
+    description: 'HB pencils pack of 10',
+    mrp: 60,
+    hsnCode: '9609',
+    gstRate: 18,
+  },
+  {
+    id: '7',
+    name: 'Camlin Geometry Box',
+    sku: 'CAM-GEO-BOX',
+    type: 'stationery',
+    description: 'Complete geometry box with compass, protractor, and scale',
+    mrp: 120,
+    hsnCode: '9017',
+    gstRate: 18,
+  },
+  {
+    id: '8',
+    name: 'Natraj Eraser (Pack of 5)',
+    sku: 'NAT-ERA-5',
+    type: 'stationery',
+    description: 'Non-dust erasers pack of 5',
+    mrp: 25,
+    hsnCode: '4016',
+    gstRate: 18,
+  },
+];
+
+export const mockBundles: Bundle[] = [
+  {
+    id: '1',
+    name: 'Class 1 Complete Book Set',
+    description: 'All NCERT books required for Class 1 including Mathematics, English, Hindi, and EVS',
+    schoolId: '1',
+    classId: '4',
+    academicYearId: '1',
+    type: 'books',
+    price: 199,
+    mrp: 230,
+    discount: 13,
+    stock: 150,
+    isActive: true,
+    items: [
+      { id: '1', bundleId: '1', productId: '1', product: mockProducts[0], quantity: 1 },
+      { id: '2', bundleId: '1', productId: '2', product: mockProducts[1], quantity: 1 },
+      { id: '3', bundleId: '1', productId: '3', product: mockProducts[2], quantity: 1 },
+      { id: '4', bundleId: '1', productId: '4', product: mockProducts[3], quantity: 1 },
+    ],
+  },
+  {
+    id: '2',
+    name: 'Class 1 Stationery Kit',
+    description: 'Complete stationery set for Class 1 including notebooks, pencils, geometry box, and erasers',
+    schoolId: '1',
+    classId: '4',
+    academicYearId: '1',
+    type: 'stationery',
+    price: 449,
+    mrp: 520,
+    discount: 14,
+    stock: 200,
+    isActive: true,
+    items: [
+      { id: '5', bundleId: '2', productId: '5', product: mockProducts[4], quantity: 6 },
+      { id: '6', bundleId: '2', productId: '6', product: mockProducts[5], quantity: 2 },
+      { id: '7', bundleId: '2', productId: '7', product: mockProducts[6], quantity: 1 },
+      { id: '8', bundleId: '2', productId: '8', product: mockProducts[7], quantity: 2 },
+    ],
+  },
+  {
+    id: '3',
+    name: 'Class 1 Complete Package',
+    description: 'Everything your child needs for Class 1 - books and stationery in one convenient bundle with maximum savings',
+    schoolId: '1',
+    classId: '4',
+    academicYearId: '1',
+    type: 'combined',
+    price: 599,
+    mrp: 750,
+    discount: 20,
+    stock: 100,
+    isActive: true,
+    items: [
+      { id: '9', bundleId: '3', productId: '1', product: mockProducts[0], quantity: 1 },
+      { id: '10', bundleId: '3', productId: '2', product: mockProducts[1], quantity: 1 },
+      { id: '11', bundleId: '3', productId: '3', product: mockProducts[2], quantity: 1 },
+      { id: '12', bundleId: '3', productId: '4', product: mockProducts[3], quantity: 1 },
+      { id: '13', bundleId: '3', productId: '5', product: mockProducts[4], quantity: 6 },
+      { id: '14', bundleId: '3', productId: '6', product: mockProducts[5], quantity: 2 },
+      { id: '15', bundleId: '3', productId: '7', product: mockProducts[6], quantity: 1 },
+      { id: '16', bundleId: '3', productId: '8', product: mockProducts[7], quantity: 2 },
+    ],
+  },
+];
+
+export const getClassesBySchool = (schoolId: string): ClassLevel[] => {
+  return mockClasses.filter(c => c.schoolId === schoolId || schoolId === '1');
+};
+
+export const getSectionsByClass = (classId: string): Section[] => {
+  return mockSections.filter(s => s.classId === classId);
+};
+
+export const getBundlesByClass = (schoolId: string, classId: string): Bundle[] => {
+  return mockBundles.filter(b => b.schoolId === schoolId && b.classId === classId);
+};
