@@ -33,6 +33,34 @@ export interface Section {
   classId: string;
 }
 
+export type PackageTier = 'basic' | 'standard' | 'premium';
+
+export interface Package {
+  id: string;
+  name: string;
+  tier: PackageTier;
+  description: string;
+  schoolId: string;
+  classId: string;
+  academicYearId: string;
+  price: number;
+  mrp: number;
+  discount: number;
+  textbooks: PackageItem[];
+  notebooks: PackageItem[];
+  stationery: PackageItem[];
+  stock: number;
+  isActive: boolean;
+  features: string[];
+}
+
+export interface PackageItem {
+  id: string;
+  productId: string;
+  product: Product;
+  quantity: number;
+}
+
 export interface Bundle {
   id: string;
   name: string;
@@ -62,7 +90,9 @@ export interface Product {
   id: string;
   name: string;
   sku: string;
-  type: 'book' | 'stationery';
+  type: 'book' | 'notebook' | 'stationery';
+  brand?: string;
+  quality?: 'basic' | 'standard' | 'premium';
   description: string;
   publisher?: string;
   author?: string;
@@ -107,8 +137,8 @@ export interface Address {
 
 export interface CartItem {
   id: string;
-  bundleId: string;
-  bundle: Bundle;
+  packageId: string;
+  package: Package;
   wardId: string;
   ward: Ward;
   quantity: number;
@@ -153,8 +183,8 @@ export type OrderStatus =
 export interface OrderItem {
   id: string;
   orderId: string;
-  bundleId: string;
-  bundle: Bundle;
+  packageId: string;
+  package: Package;
   wardId: string;
   ward: Ward;
   quantity: number;
@@ -205,6 +235,14 @@ export interface Coupon {
   usageLimit?: number;
   usedCount: number;
   isActive: boolean;
+}
+
+export interface CheckoutInfo {
+  studentName: string;
+  parentName: string;
+  phone: string;
+  email: string;
+  address: Address;
 }
 
 // Selection state for the shopping flow

@@ -1,4 +1,4 @@
-import { School, ClassLevel, Section, Bundle, Product, AcademicYear } from '@/types';
+import { School, ClassLevel, Section, Product, AcademicYear, Package } from '@/types';
 
 export const mockAcademicYear: AcademicYear = {
   id: '1',
@@ -21,7 +21,7 @@ export const mockSchools: School[] = [
   },
   {
     id: '2',
-    name: 'St. Mary\'s Convent School',
+    name: "St. Mary's Convent School",
     code: 'STMARY-MUM',
     address: 'Bandra West, Mumbai',
     city: 'Mumbai',
@@ -86,9 +86,10 @@ export const mockSections: Section[] = [
   { id: '6', name: 'B', classId: '5' },
 ];
 
-const mockProducts: Product[] = [
+// Textbooks - Same for all packages
+const textbooks: Product[] = [
   {
-    id: '1',
+    id: 'tb-1',
     name: 'NCERT Mathematics Class 1',
     sku: 'NCERT-MATH-1',
     type: 'book',
@@ -100,7 +101,7 @@ const mockProducts: Product[] = [
     gstRate: 0,
   },
   {
-    id: '2',
+    id: 'tb-2',
     name: 'NCERT English Class 1',
     sku: 'NCERT-ENG-1',
     type: 'book',
@@ -112,7 +113,7 @@ const mockProducts: Product[] = [
     gstRate: 0,
   },
   {
-    id: '3',
+    id: 'tb-3',
     name: 'NCERT Hindi Class 1',
     sku: 'NCERT-HIN-1',
     type: 'book',
@@ -124,7 +125,7 @@ const mockProducts: Product[] = [
     gstRate: 0,
   },
   {
-    id: '4',
+    id: 'tb-4',
     name: 'NCERT EVS Class 1',
     sku: 'NCERT-EVS-1',
     type: 'book',
@@ -135,123 +136,340 @@ const mockProducts: Product[] = [
     hsnCode: '4901',
     gstRate: 0,
   },
+];
+
+// Notebooks - Different quality tiers
+const notebooksBasic: Product[] = [
   {
-    id: '5',
-    name: 'Classmate Notebook (172 Pages)',
+    id: 'nb-basic-1',
+    name: 'Long Notebook (172 Pages)',
+    sku: 'NB-BASIC-172',
+    type: 'notebook',
+    brand: 'Local Brand',
+    quality: 'basic',
+    description: 'Single line ruled notebook - 172 pages',
+    mrp: 25,
+    hsnCode: '4820',
+    gstRate: 12,
+  },
+  {
+    id: 'nb-basic-2',
+    name: 'Small Notebook (92 Pages)',
+    sku: 'NB-BASIC-92',
+    type: 'notebook',
+    brand: 'Local Brand',
+    quality: 'basic',
+    description: 'Four line ruled notebook for handwriting - 92 pages',
+    mrp: 15,
+    hsnCode: '4820',
+    gstRate: 12,
+  },
+];
+
+const notebooksStandard: Product[] = [
+  {
+    id: 'nb-std-1',
+    name: 'Classmate Long Notebook (172 Pages)',
     sku: 'CM-NB-172',
-    type: 'stationery',
+    type: 'notebook',
+    brand: 'Classmate',
+    quality: 'standard',
     description: 'Single line ruled notebook - 172 pages',
     mrp: 45,
     hsnCode: '4820',
     gstRate: 12,
   },
   {
-    id: '6',
+    id: 'nb-std-2',
+    name: 'Classmate Small Notebook (92 Pages)',
+    sku: 'CM-NB-92',
+    type: 'notebook',
+    brand: 'Classmate',
+    quality: 'standard',
+    description: 'Four line ruled notebook for handwriting - 92 pages',
+    mrp: 30,
+    hsnCode: '4820',
+    gstRate: 12,
+  },
+];
+
+const notebooksPremium: Product[] = [
+  {
+    id: 'nb-prem-1',
+    name: 'Navneet Long Notebook (200 Pages)',
+    sku: 'NAV-NB-200',
+    type: 'notebook',
+    brand: 'Navneet',
+    quality: 'premium',
+    description: 'Premium single line ruled notebook - 200 pages with thick paper',
+    mrp: 75,
+    hsnCode: '4820',
+    gstRate: 12,
+  },
+  {
+    id: 'nb-prem-2',
+    name: 'Navneet Small Notebook (100 Pages)',
+    sku: 'NAV-NB-100',
+    type: 'notebook',
+    brand: 'Navneet',
+    quality: 'premium',
+    description: 'Premium four line ruled notebook - 100 pages',
+    mrp: 50,
+    hsnCode: '4820',
+    gstRate: 12,
+  },
+];
+
+// Stationery - Different quality tiers
+const stationeryBasic: Product[] = [
+  {
+    id: 'st-basic-1',
+    name: 'Pencils (Pack of 10)',
+    sku: 'PEN-BASIC-10',
+    type: 'stationery',
+    brand: 'Local',
+    quality: 'basic',
+    description: 'HB pencils pack of 10',
+    mrp: 30,
+    hsnCode: '9609',
+    gstRate: 18,
+  },
+  {
+    id: 'st-basic-2',
+    name: 'Eraser (Pack of 5)',
+    sku: 'ERA-BASIC-5',
+    type: 'stationery',
+    brand: 'Local',
+    quality: 'basic',
+    description: 'Erasers pack of 5',
+    mrp: 15,
+    hsnCode: '4016',
+    gstRate: 18,
+  },
+  {
+    id: 'st-basic-3',
+    name: 'Sharpener (Pack of 2)',
+    sku: 'SHP-BASIC-2',
+    type: 'stationery',
+    brand: 'Local',
+    quality: 'basic',
+    description: 'Metal sharpeners pack of 2',
+    mrp: 10,
+    hsnCode: '8214',
+    gstRate: 18,
+  },
+  {
+    id: 'st-basic-4',
+    name: 'Geometry Box',
+    sku: 'GEO-BASIC',
+    type: 'stationery',
+    brand: 'Local',
+    quality: 'basic',
+    description: 'Basic geometry box with compass and protractor',
+    mrp: 50,
+    hsnCode: '9017',
+    gstRate: 18,
+  },
+];
+
+const stationeryStandard: Product[] = [
+  {
+    id: 'st-std-1',
     name: 'Apsara Pencils (Pack of 10)',
     sku: 'APS-PEN-10',
     type: 'stationery',
+    brand: 'Apsara',
+    quality: 'standard',
     description: 'HB pencils pack of 10',
     mrp: 60,
     hsnCode: '9609',
     gstRate: 18,
   },
   {
-    id: '7',
-    name: 'Camlin Geometry Box',
-    sku: 'CAM-GEO-BOX',
-    type: 'stationery',
-    description: 'Complete geometry box with compass, protractor, and scale',
-    mrp: 120,
-    hsnCode: '9017',
-    gstRate: 18,
-  },
-  {
-    id: '8',
+    id: 'st-std-2',
     name: 'Natraj Eraser (Pack of 5)',
     sku: 'NAT-ERA-5',
     type: 'stationery',
+    brand: 'Natraj',
+    quality: 'standard',
     description: 'Non-dust erasers pack of 5',
     mrp: 25,
     hsnCode: '4016',
     gstRate: 18,
   },
+  {
+    id: 'st-std-3',
+    name: 'Apsara Sharpener (Pack of 2)',
+    sku: 'APS-SHP-2',
+    type: 'stationery',
+    brand: 'Apsara',
+    quality: 'standard',
+    description: 'Metal sharpeners with container pack of 2',
+    mrp: 20,
+    hsnCode: '8214',
+    gstRate: 18,
+  },
+  {
+    id: 'st-std-4',
+    name: 'Camlin Geometry Box',
+    sku: 'CAM-GEO-BOX',
+    type: 'stationery',
+    brand: 'Camlin',
+    quality: 'standard',
+    description: 'Complete geometry box with compass, protractor, and scale',
+    mrp: 120,
+    hsnCode: '9017',
+    gstRate: 18,
+  },
 ];
 
-export const mockBundles: Bundle[] = [
+const stationeryPremium: Product[] = [
   {
-    id: '1',
-    name: 'Class 1 Complete Book Set',
-    description: 'All NCERT books required for Class 1 including Mathematics, English, Hindi, and EVS',
-    schoolId: '1',
-    classId: '4',
-    academicYearId: '1',
-    type: 'books',
-    price: 199,
-    mrp: 230,
-    discount: 13,
-    stock: 150,
-    isActive: true,
-    items: [
-      { id: '1', bundleId: '1', productId: '1', product: mockProducts[0], quantity: 1 },
-      { id: '2', bundleId: '1', productId: '2', product: mockProducts[1], quantity: 1 },
-      { id: '3', bundleId: '1', productId: '3', product: mockProducts[2], quantity: 1 },
-      { id: '4', bundleId: '1', productId: '4', product: mockProducts[3], quantity: 1 },
-    ],
+    id: 'st-prem-1',
+    name: 'Faber-Castell Pencils (Pack of 10)',
+    sku: 'FC-PEN-10',
+    type: 'stationery',
+    brand: 'Faber-Castell',
+    quality: 'premium',
+    description: 'Premium HB pencils pack of 10',
+    mrp: 100,
+    hsnCode: '9609',
+    gstRate: 18,
   },
   {
-    id: '2',
-    name: 'Class 1 Stationery Kit',
-    description: 'Complete stationery set for Class 1 including notebooks, pencils, geometry box, and erasers',
+    id: 'st-prem-2',
+    name: 'Staedtler Eraser (Pack of 5)',
+    sku: 'STD-ERA-5',
+    type: 'stationery',
+    brand: 'Staedtler',
+    quality: 'premium',
+    description: 'Premium dust-free erasers pack of 5',
+    mrp: 50,
+    hsnCode: '4016',
+    gstRate: 18,
+  },
+  {
+    id: 'st-prem-3',
+    name: 'Faber-Castell Sharpener',
+    sku: 'FC-SHP',
+    type: 'stationery',
+    brand: 'Faber-Castell',
+    quality: 'premium',
+    description: 'Premium double sharpener with container',
+    mrp: 45,
+    hsnCode: '8214',
+    gstRate: 18,
+  },
+  {
+    id: 'st-prem-4',
+    name: 'Staedtler Geometry Box',
+    sku: 'STD-GEO-BOX',
+    type: 'stationery',
+    brand: 'Staedtler',
+    quality: 'premium',
+    description: 'Premium geometry box with precision instruments',
+    mrp: 250,
+    hsnCode: '9017',
+    gstRate: 18,
+  },
+];
+
+// Helper to create package items
+const createPackageItems = (products: Product[], quantities: number[]) =>
+  products.map((product, index) => ({
+    id: `item-${product.id}`,
+    productId: product.id,
+    product,
+    quantity: quantities[index] || 1,
+  }));
+
+// Packages - 3 tiers per class
+export const mockPackages: Package[] = [
+  // Class 1 - Basic Package
+  {
+    id: 'pkg-c1-basic',
+    name: 'Basic Package',
+    tier: 'basic',
+    description: 'Essential learning package with quality basics',
     schoolId: '1',
     classId: '4',
     academicYearId: '1',
-    type: 'stationery',
-    price: 449,
-    mrp: 520,
-    discount: 14,
+    price: 399,
+    mrp: 485,
+    discount: 18,
+    textbooks: createPackageItems(textbooks, [1, 1, 1, 1]),
+    notebooks: createPackageItems(notebooksBasic, [6, 4]),
+    stationery: createPackageItems(stationeryBasic, [1, 1, 1, 1]),
     stock: 200,
     isActive: true,
-    items: [
-      { id: '5', bundleId: '2', productId: '5', product: mockProducts[4], quantity: 6 },
-      { id: '6', bundleId: '2', productId: '6', product: mockProducts[5], quantity: 2 },
-      { id: '7', bundleId: '2', productId: '7', product: mockProducts[6], quantity: 1 },
-      { id: '8', bundleId: '2', productId: '8', product: mockProducts[7], quantity: 2 },
+    features: [
+      'All NCERT Textbooks',
+      '10 Notebooks (Local Brand)',
+      'Basic Stationery Kit',
+      'Free Delivery',
     ],
   },
+  // Class 1 - Standard Package
   {
-    id: '3',
-    name: 'Class 1 Complete Package',
-    description: 'Everything your child needs for Class 1 - books and stationery in one convenient bundle with maximum savings',
+    id: 'pkg-c1-standard',
+    name: 'Standard Package',
+    tier: 'standard',
+    description: 'Popular choice with branded notebooks and stationery',
     schoolId: '1',
     classId: '4',
     academicYearId: '1',
-    type: 'combined',
-    price: 599,
-    mrp: 750,
-    discount: 20,
+    price: 699,
+    mrp: 850,
+    discount: 18,
+    textbooks: createPackageItems(textbooks, [1, 1, 1, 1]),
+    notebooks: createPackageItems(notebooksStandard, [6, 4]),
+    stationery: createPackageItems(stationeryStandard, [1, 1, 1, 1]),
+    stock: 150,
+    isActive: true,
+    features: [
+      'All NCERT Textbooks',
+      '10 Classmate Notebooks',
+      'Apsara & Camlin Stationery',
+      'Free Delivery',
+      'Gift Wrapping',
+    ],
+  },
+  // Class 1 - Premium Package
+  {
+    id: 'pkg-c1-premium',
+    name: 'Premium Package',
+    tier: 'premium',
+    description: 'Best-in-class with premium brands and extra pages',
+    schoolId: '1',
+    classId: '4',
+    academicYearId: '1',
+    price: 1099,
+    mrp: 1400,
+    discount: 21,
+    textbooks: createPackageItems(textbooks, [1, 1, 1, 1]),
+    notebooks: createPackageItems(notebooksPremium, [6, 4]),
+    stationery: createPackageItems(stationeryPremium, [1, 1, 1, 1]),
     stock: 100,
     isActive: true,
-    items: [
-      { id: '9', bundleId: '3', productId: '1', product: mockProducts[0], quantity: 1 },
-      { id: '10', bundleId: '3', productId: '2', product: mockProducts[1], quantity: 1 },
-      { id: '11', bundleId: '3', productId: '3', product: mockProducts[2], quantity: 1 },
-      { id: '12', bundleId: '3', productId: '4', product: mockProducts[3], quantity: 1 },
-      { id: '13', bundleId: '3', productId: '5', product: mockProducts[4], quantity: 6 },
-      { id: '14', bundleId: '3', productId: '6', product: mockProducts[5], quantity: 2 },
-      { id: '15', bundleId: '3', productId: '7', product: mockProducts[6], quantity: 1 },
-      { id: '16', bundleId: '3', productId: '8', product: mockProducts[7], quantity: 2 },
+    features: [
+      'All NCERT Textbooks',
+      '10 Navneet Premium Notebooks',
+      'Faber-Castell & Staedtler Stationery',
+      'Free Express Delivery',
+      'Gift Wrapping',
+      'Name Labels Included',
     ],
   },
 ];
 
 export const getClassesBySchool = (schoolId: string): ClassLevel[] => {
-  return mockClasses.filter(c => c.schoolId === schoolId || schoolId === '1');
+  return mockClasses.filter((c) => c.schoolId === schoolId || schoolId === '1');
 };
 
 export const getSectionsByClass = (classId: string): Section[] => {
-  return mockSections.filter(s => s.classId === classId);
+  return mockSections.filter((s) => s.classId === classId);
 };
 
-export const getBundlesByClass = (schoolId: string, classId: string): Bundle[] => {
-  return mockBundles.filter(b => b.schoolId === schoolId && b.classId === classId);
+export const getPackagesByClass = (schoolId: string, classId: string): Package[] => {
+  return mockPackages.filter((p) => p.schoolId === schoolId && p.classId === classId);
 };

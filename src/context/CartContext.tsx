@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState, ReactNode, useMemo } from 'react';
-import { Bundle, CartItem, Cart, Ward } from '@/types';
+import { Package, CartItem, Cart, Ward } from '@/types';
 import { toast } from '@/hooks/use-toast';
 
 interface CartContextType {
   cart: Cart;
   items: CartItem[];
-  addToCart: (bundle: Bundle, ward: Ward) => void;
+  addToCart: (pkg: Package, ward: Ward) => void;
   removeFromCart: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
@@ -17,31 +17,31 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
 
-  const addToCart = (bundle: Bundle, ward: Ward) => {
+  const addToCart = (pkg: Package, ward: Ward) => {
     setItems(prev => {
       const existingItem = prev.find(
-        item => item.bundleId === bundle.id && item.wardId === ward.id
+        item => item.packageId === pkg.id && item.wardId === ward.id
       );
 
       if (existingItem) {
         toast({
           title: "Already in cart",
-          description: `${bundle.name} for ${ward.name} is already in your cart`,
+          description: `${pkg.name} for ${ward.name} is already in your cart`,
         });
         return prev;
       }
 
       toast({
         title: "Added to cart",
-        description: `${bundle.name} added for ${ward.name}`,
+        description: `${pkg.name} added for ${ward.name}`,
       });
 
       return [
         ...prev,
         {
-          id: `${bundle.id}-${ward.id}-${Date.now()}`,
-          bundleId: bundle.id,
-          bundle,
+          id: `${pkg.id}-${ward.id}-${Date.now()}`,
+          packageId: pkg.id,
+          package: pkg,
           wardId: ward.id,
           ward,
           quantity: 1,
@@ -76,40 +76,25 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const cart = useMemo(() => {
     const subtotal = items.reduce(
-      (sum, item) => sum + item.bundle.price * item.quantity,
+      (sum, item) => sum + item.package.price * item.quantity,
       0
     );
     const discount = items.reduce(
-      (sum, item) => sum + (item.bundle.mrp - item.bundle.price) * item.quantity,
+      (sum, item) => sum + (item.package.mrp - item.package.price) * item.quantity,
       0
     );
-    const tax = 0; // Simplified - would calculate GST
+    const tax = 0;
     const shipping = subtotal > 500 ? 0 : 49;
     const total = subtotal + tax + shipping;
 
-    return {
-      items,
-      subtotal,
-      discount,
-      tax,
-      shipping,
-      total,
-    };
+    return { items, subtotal, discount, tax, shipping, total };
   }, [items]);
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
     <CartContext.Provider
-      value={{
-        cart,
-        items,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        itemCount,
-      }}
+      value={{ cart, items, addToCart, removeFromCart, updateQuantity, clearCart, itemCount }}
     >
       {children}
     </CartContext.Provider>

@@ -2,13 +2,14 @@ import { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { ClassSelector } from '@/components/school/ClassSelector';
-import { BundleCard } from '@/components/bundle/BundleCard';
+import { PackageCard } from '@/components/package/PackageCard';
+import { PackageDetails } from '@/components/package/PackageDetails';
 import { Button } from '@/components/ui/button';
-import { mockSchools, getClassesBySchool, getSectionsByClass, getBundlesByClass } from '@/data/mockData';
+import { mockSchools, getClassesBySchool, getSectionsByClass, getPackagesByClass } from '@/data/mockData';
 import { useSelection } from '@/context/SelectionContext';
 import { useCart } from '@/context/CartContext';
-import { ClassLevel, Section } from '@/types';
-import { ArrowLeft, MapPin, ChevronRight } from 'lucide-react';
+import { ClassLevel, Section, Package } from '@/types';
+import { ArrowLeft, MapPin, ChevronRight, ShoppingCart } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -25,8 +26,8 @@ const SchoolDetail = () => {
   const { selection, setSchool, setClassLevel, setSection } = useSelection();
   const { addToCart, items } = useCart();
 
+  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
   const [showWardDialog, setShowWardDialog] = useState(false);
-  const [pendingBundle, setPendingBundle] = useState<typeof bundles[0] | null>(null);
   const [wardName, setWardName] = useState('');
 
   const school = useMemo(() => 
@@ -50,12 +51,17 @@ const SchoolDetail = () => {
     [selection.classLevel]
   );
 
-  const bundles = useMemo(() => 
+  const packages = useMemo(() => 
     school && selection.classLevel 
-      ? getBundlesByClass(school.id, selection.classLevel.id)
+      ? getPackagesByClass(school.id, selection.classLevel.id)
       : [],
     [school, selection.classLevel]
   );
+
+  // Reset selected package when class changes
+  useEffect(() => {
+    setSelectedPackage(null);
+  }, [selection.classLevel]);
 
   const handleClassSelect = (classLevel: ClassLevel) => {
     setClassLevel(classLevel);
@@ -65,13 +71,18 @@ const SchoolDetail = () => {
     setSection(section.id === selection.section?.id ? null : section);
   };
 
-  const handleAddToCart = (bundle: typeof bundles[0]) => {
-    setPendingBundle(bundle);
-    setShowWardDialog(true);
+  const handlePackageSelect = (pkg: Package) => {
+    setSelectedPackage(pkg);
+  };
+
+  const handleProceedToCheckout = () => {
+    if (selectedPackage) {
+      setShowWardDialog(true);
+    }
   };
 
   const handleConfirmAddToCart = () => {
-    if (pendingBundle && wardName.trim() && school && selection.classLevel) {
+    if (selectedPackage && wardName.trim() && school && selection.classLevel) {
       const ward = {
         id: `ward-${Date.now()}`,
         userId: 'guest',
@@ -80,15 +91,15 @@ const SchoolDetail = () => {
         classId: selection.classLevel.id,
         sectionId: selection.section?.id,
       };
-      addToCart(pendingBundle, ward);
+      addToCart(selectedPackage, ward);
       setShowWardDialog(false);
       setWardName('');
-      setPendingBundle(null);
+      navigate('/checkout');
     }
   };
 
-  const isInCart = (bundleId: string) => {
-    return items.some(item => item.bundleId === bundleId);
+  const isInCart = (packageId: string) => {
+    return items.some(item => item.packageId === packageId);
   };
 
   if (!school) {
@@ -147,13 +158,13 @@ const SchoolDetail = () => {
         </div>
       </section>
 
-      {/* Bundles */}
+      {/* Package Selection */}
       {selection.classLevel && (
         <section className="py-8 md:py-12 bg-muted/30">
           <div className="container">
-            <div className="flex items-center gap-2 mb-8">
+            <div className="flex items-center gap-2 mb-2">
               <h2 className="text-2xl font-bold text-foreground">
-                Available Bundles
+                Choose Your Package
               </h2>
               <ChevronRight className="h-5 w-5 text-muted-foreground" />
               <span className="text-muted-foreground">
@@ -161,23 +172,45 @@ const SchoolDetail = () => {
                 {selection.section && ` - Section ${selection.section.name}`}
               </span>
             </div>
+            <p className="text-muted-foreground mb-8">
+              Same textbooks in all packages. Choose based on notebook & stationery quality.
+            </p>
 
-            {bundles.length === 0 ? (
+            {packages.length === 0 ? (
               <div className="text-center py-12 bg-card rounded-2xl">
                 <p className="text-muted-foreground">
-                  No bundles available for this class yet. Please check back later.
+                  No packages available for this class yet. Please check back later.
                 </p>
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {bundles.map((bundle) => (
-                  <BundleCard
-                    key={bundle.id}
-                    bundle={bundle}
-                    onAddToCart={() => handleAddToCart(bundle)}
-                    isInCart={isInCart(bundle.id)}
+              <div className="grid md:grid-cols-3 gap-6 mb-8">
+                {packages.map((pkg) => (
+                  <PackageCard
+                    key={pkg.id}
+                    pkg={pkg}
+                    isSelected={selectedPackage?.id === pkg.id}
+                    onSelect={() => handlePackageSelect(pkg)}
                   />
                 ))}
+              </div>
+            )}
+
+            {/* Selected Package Details */}
+            {selectedPackage && (
+              <div className="space-y-6">
+                <PackageDetails pkg={selectedPackage} />
+
+                {/* Proceed Button */}
+                <div className="flex justify-center">
+                  <Button
+                    size="lg"
+                    className="min-w-[280px] h-14 text-lg"
+                    onClick={handleProceedToCheckout}
+                  >
+                    <ShoppingCart className="h-5 w-5 mr-2" />
+                    Proceed to Checkout - ₹{selectedPackage.price}
+                  </Button>
+                </div>
               </div>
             )}
           </div>
@@ -188,18 +221,17 @@ const SchoolDetail = () => {
       <Dialog open={showWardDialog} onOpenChange={setShowWardDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Who is this for?</DialogTitle>
+            <DialogTitle>Student Details</DialogTitle>
             <DialogDescription>
-              Enter the name of the child this bundle is for. This helps us 
-              keep track of orders for multiple children.
+              Enter the name of the student this package is for.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 pt-4">
             <div className="space-y-2">
-              <Label htmlFor="wardName">Child's Name</Label>
+              <Label htmlFor="wardName">Student's Name</Label>
               <Input
                 id="wardName"
-                placeholder="e.g., Rahul"
+                placeholder="e.g., Rahul Kumar"
                 value={wardName}
                 onChange={(e) => setWardName(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleConfirmAddToCart()}
@@ -213,7 +245,7 @@ const SchoolDetail = () => {
                 onClick={handleConfirmAddToCart}
                 disabled={!wardName.trim()}
               >
-                Add to Cart
+                Continue to Checkout
               </Button>
             </div>
           </div>
