@@ -9,6 +9,8 @@ import Index from "./pages/Index";
 import Schools from "./pages/Schools";
 import SchoolDetail from "./pages/SchoolDetail";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import OrderSuccess from "./pages/OrderSuccess";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,7 +28,8 @@ const App = () => (
               <Route path="/schools" element={<Schools />} />
               <Route path="/schools/:schoolId" element={<SchoolDetail />} />
               <Route path="/cart" element={<Cart />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/order-success" element={<OrderSuccess />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
