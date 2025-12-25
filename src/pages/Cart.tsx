@@ -74,13 +74,13 @@ const Cart = () => {
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <h3 className="font-semibold text-foreground mb-1">
-                          {item.bundle.name}
+                          {item.package.name}
                         </h3>
                         <p className="text-sm text-muted-foreground mb-2">
                           For: <span className="text-foreground">{item.ward.name}</span>
                         </p>
                         <p className="text-xs text-muted-foreground">
-                          {item.bundle.items.length} items included
+                          {item.package.textbooks.length + item.package.notebooks.length + item.package.stationery.length} items included
                         </p>
                       </div>
                       <Button
@@ -116,11 +116,11 @@ const Cart = () => {
                       </div>
                       <div className="text-right">
                         <p className="font-bold text-lg">
-                          ₹{item.bundle.price * item.quantity}
+                          ₹{item.package.price * item.quantity}
                         </p>
-                        {item.bundle.mrp > item.bundle.price && (
+                        {item.package.mrp > item.package.price && (
                           <p className="text-sm text-muted-foreground line-through">
-                            ₹{item.bundle.mrp * item.quantity}
+                            ₹{item.package.mrp * item.quantity}
                           </p>
                         )}
                       </div>
