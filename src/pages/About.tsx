@@ -275,7 +275,7 @@ const About = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" variant="secondary" className="text-base">
                   <Link to="/schools">
-                    Browse Schools
+                    Meet the People Behind Glow Nest
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Link>
                 </Button>
