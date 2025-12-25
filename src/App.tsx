@@ -11,6 +11,7 @@ import SchoolDetail from "./pages/SchoolDetail";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
+import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
               <Route path="/schools" element={<Schools />} />
               <Route path="/schools/:schoolId" element={<SchoolDetail />} />
               <Route path="/cart" element={<Cart />} />
